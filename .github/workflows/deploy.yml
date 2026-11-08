@@ -25,6 +25,7 @@ jobs:
       - name: Cài đặt pnpm
         uses: pnpm/action-setup@v4
         with:
+          version: 9.15.0
           run_install: false
 
       - name: Cài đặt Node.js
@@ -34,10 +35,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Cài đặt dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
-      - name: Build ứng dụng
-        run: pnpm run build
+      - name: Build ứng dụng Web
+        run: pnpm --filter @opencreator/web build
 
       - name: Cấu hình GitHub Pages
         uses: actions/configure-pages@v5
@@ -45,8 +46,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Thư mục chứa file sau khi build (thường là dist, build hoặc out)
-          path: './dist'
+          # Thư mục build của package web
+          path: './apps/web/dist'
 
   deploy:
     environment:
